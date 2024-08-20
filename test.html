@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>WebAssembly Test</title>
+
+</head>
+
+<body>
+    <script defer type="module">
+        import { init, Wasmer } from "https://unpkg.com/@wasmer/sdk@latest/dist/index.mjs";
+    
+        async function runPython() {
+            await init();
+    
+            const packageName = "python/python";
+            const pkg = await Wasmer.fromRegistry(packageName);
+            const instance = await pkg.entrypoint.run({
+                args: ["-c", "print('Hello, World!')"],
+            });
+    
+            const { code, stdout } = await instance.wait();
+    
+            console.log(`Python exited with ${code}: ${stdout}`);
+        }
+    
+        runPython();
+    </script>
+
+</body>
+
+</html>
